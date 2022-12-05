@@ -25,35 +25,3 @@ var questions  = [
         answer: '4. console.log'
     }
 ];
-
-var currentQuestionIndex = 0;
-var questionWrap = document.getElementById('questions')
-var questionTitle = document.getElementById('question-title')
-var choicesOutput = document.getElementById('choices')
-
-function startQuiz() {
-    var currentQuestion = questions[currentQuestionIndex];
-    var choices = currentQuestion.choices;
-
-    questionTitle.innerText = currentQuestion.title;
-
-    choicesOutput.innerHTML = '';
-
-    for(var i = 0; i < choices.length; i++) {
-        var choice = choices[i];
-        var isCorrect = currentQuestion.answer === choice;
-
-        choicesOutput.insertAdjacentHTML('beforeend', `
-        <button data-correct=${isCorrect}>${choice}</button>
-        `)
-    }
-
-}
-
-function checkAnswer(event) {
-    console.log(event.target);
-}
-
-choicesOutput.addEventListener('click', checkAnswer)
-
-startQuiz();
