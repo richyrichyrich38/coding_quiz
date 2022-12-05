@@ -1,14 +1,22 @@
 var timerEl = document.getElementById('time')
 var btn = document.getElementById('start')
+var startScreen = document.getElementById('start-screen')
 
 
-function countdown() {
-    var timeLeft = 60
-    var timeInterval 
+function startCountdown(seconds) {
+    var counter = seconds;
+    var interval = setInterval(() => {
+    console.log(counter);
+    counter--;
+    if(counter < 0) {
+        clearInterval(interval);
+    }
+    }, 1000);
 };
 
 
 btn.addEventListener('click', function () {
-    console.log('hey, it works');
-
+    questionWrap.classList.remove('hide');
+    startScreen.classList.add('hide')
+    startCountdown(60)
 });
