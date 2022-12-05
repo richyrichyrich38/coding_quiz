@@ -20,7 +20,7 @@ var questions  = [
         answer: '3. quotes'
     },
     {
-        title: 'A very useful tol used during development and debugging for printing content to the debugger is:',
+        title: 'A very useful tool used during development and debugging for printing content to the debugger is:',
         choices: ['1. Javascript', '2. terminal / bash', '3. for loops', '4. console.log'],
         answer: '4. console.log'
     }
@@ -37,6 +37,8 @@ function startQuiz() {
 
     questionTitle.innerText = currentQuestion.title;
 
+    choicesOutput.innerHTML = '';
+
     for(var i = 0; i < choices.length; i++) {
         var choice = choices[i];
         var isCorrect = currentQuestion.answer === choice;
@@ -46,6 +48,12 @@ function startQuiz() {
         `)
     }
 
-    // console.log('currentQuestion');
 }
+
+function checkAnswer(event) {
+    console.log(event.target);
+}
+
+choicesOutput.addEventListener('click', checkAnswer)
+
 startQuiz();
