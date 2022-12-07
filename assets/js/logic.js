@@ -57,7 +57,7 @@ function checkAnswer(event) {
     if(userChoice == 'true') {
         console.log(`Correct`);
         currentQuestionIndex++
-        insertAdjacentHTML('')
+        // insertAdjacentHTML('');
         startQuiz();
     } else {
         console.log(`Wrong`);
