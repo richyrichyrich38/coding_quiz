@@ -10,6 +10,6 @@ var deleteHighScore = document.getElementById('clear');
 document.getElementById('highscores').innerHTML = `${initial}: ${highScore}`;
 
 // Deletes all previous scores when clear high score button is pressed
-clearHighScore.addEventListener ('click', function() {
+deleteHighScore.addEventListener ('click', function() {
     document.getElementById('highscores').classList.add('hide');
 });
