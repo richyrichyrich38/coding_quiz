@@ -26,7 +26,7 @@ function timeLeft() {
         timerEl.innerText = countdown;
         countdown--;
         if (countdown < 0) {
-            localStorage.setItem("Score", JSON.stringify(quizTime + 1)); // rests timed out score to 0
+            localStorage.setItem("Score", JSON.stringify(countdown + 1)); // rests timed out score to 0
             questionWrap.classList.add('hide'); // hides question
             endScreen.classList.remove('hide'); // shows final score page
             finalScore.innerHTML = JSON.parse(localStorage.getItem("Score")); // displays users final score and initial request
