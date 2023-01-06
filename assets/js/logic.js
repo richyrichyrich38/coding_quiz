@@ -37,3 +37,42 @@ function timeLeft() {
     return timer;
 
 };
+
+// function that executes the quiz
+function startQuiz() {
+    // If statement that loops through questions and if no more available ends the quiz with the remaining time being saved as the final score
+    if (currentQuestionIndex < questions.length) {
+
+        var currentQuestion = questions[currentQuestionIndex]; 
+        questionTitle.innerText = currentQuestion.title;  
+        var choices = currentQuestion.choices;  
+        choiceOutput.innerHTML = "";  //sets div to empty string once run
+
+        // For Loop to create a button for each choice in the current question title and choices
+        for (var i = 0; i < choices.length; i++) {
+            var choice = choices[i];  //Set as current choice
+            var correctAnswer = currentQuestion.answer === choice;  //measures against correct answer
+
+            //Creating a button for every choice in our questions array and target the correct answer with the data-correct class
+            choiceOutput.insertAdjacentHTML('beforeend', `
+            <button data-correct=${correctAnswer}>${choice}</button>
+            `);
+
+        }
+
+        //Display the question and choices when start button is clicked
+        questionWrap.classList.remove('hide');
+
+    } else {
+        localStorage.setItem("Score", JSON.stringify(quizTime)); // final score is time remaining
+        questionWrap.classList.add('hide'); // hides final question
+        endScreen.classList.remove('hide'); // displays initial input page
+        finalScore.innerHTML = JSON.parse(localStorage.getItem("Score")); // shows final score and you can input initials
+        submit.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.setItem("Initials", JSON.stringify(initials.value));  // stores initials 
+            endScreen.innerText = 'Congratulations! Please click <b>View Highscores</b> on the left of the page to view all high scores!';
+        
+        });
+    };
+}
