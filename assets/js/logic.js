@@ -46,7 +46,7 @@ function startQuiz() {
         var currentQuestion = questions[currentQuestionIndex]; 
         questionTitle.innerText = currentQuestion.title;  
         var choices = currentQuestion.choices;  
-        choiceOutput.innerHTML = "";  //sets div to empty string once run
+        choicesOutput.innerHTML = "";  //sets div to empty string once run
 
         // For Loop to create a button for each choice in the current question title and choices
         for (var i = 0; i < choices.length; i++) {
@@ -54,7 +54,7 @@ function startQuiz() {
             var correctAnswer = currentQuestion.answer === choice;  //measures against correct answer
 
             //Creating a button for every choice in our questions array and target the correct answer with the data-correct class
-            choiceOutput.insertAdjacentHTML('beforeend', `
+            choicesOutput.insertAdjacentHTML('beforeend', `
             <button data-correct=${correctAnswer}>${choice}</button>
             `);
 
@@ -64,15 +64,57 @@ function startQuiz() {
         questionWrap.classList.remove('hide');
 
     } else {
-        localStorage.setItem("Score", JSON.stringify(quizTime)); // final score is time remaining
+        localStorage.setItem("Score", JSON.stringify(countdown)); // final score is time remaining
         questionWrap.classList.add('hide'); // hides final question
         endScreen.classList.remove('hide'); // displays initial input page
         finalScore.innerHTML = JSON.parse(localStorage.getItem("Score")); // shows final score and you can input initials
         submit.addEventListener('click', function(e) {
             e.preventDefault();
             localStorage.setItem("Initials", JSON.stringify(initials.value));  // stores initials 
-            endScreen.innerText = 'Congratulations! Please click <b>View Highscores</b> on the left of the page to view all high scores!';
+            endScreen.innerText = 'Congratulations! Click View Highscores on the top left of the page to view all high scores!';
         
         });
     };
 }
+
+
+
+
+// Check if user choice is correct, display correct and play correct wav. If choice is incorrect, display 'wrong!', incorrect wav plays and deducts 10 seconds from countdown timer
+choicesOutput.addEventListener('click', function (event) {
+    event.preventDefault();
+    if (event.target.innerText === questions[currentQuestionIndex].answer) {
+        correctSound.play(); // Plays correct wav
+        feedback.classList.remove('hide');
+        feedback.innerText = 'correct!'; // Shows 'correct!'
+        setTimeout(function () {
+            feedback.classList.add('hide'); 
+        }, 500); //Shows 'correct!' for 0.5 seconds
+
+
+    } else {
+        feedback.classList.remove('hide'); 
+        feedback.innerText = 'wrong!'; // Shows 'wrong!'
+        setTimeout(function () {
+            incorrectSound.play(); // Plays incorrect wav
+            feedback.classList.add('hide');
+        }, 500); //Shows 'wrong!' for 0.5 seconds
+
+        countdown -= 10; // Deducts 10s for incorrect answers
+    };
+
+    // Goes to the next question after choice is made
+    currentQuestionIndex++;
+    var currentQuestion = questions[currentQuestionIndex];
+    //console.log(currentQuestion); 
+    startQuiz();
+});
+
+
+
+// Set the timer to start decrementing at the click of the start button by calling the timeLeft function in the event listener for the button
+var countDown = btn.addEventListener('click', function () {
+    document.getElementById('start-screen').classList.add('hide'); //This hides the start screen to display only the questions
+    timeLeft();
+    startQuiz();
+});
