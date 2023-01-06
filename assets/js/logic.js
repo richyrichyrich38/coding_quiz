@@ -69,8 +69,8 @@ function checkAnswer(event) {
 
 choicesOutput.addEventListener('click', checkAnswer)
 
-
-
 startQuiz();
+
+
 
 // 7.12.22 - having to recommit as github isn't loading my new code to the published site
