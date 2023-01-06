@@ -2,75 +2,38 @@
 var timerEl = document.getElementById('time')
 var btn = document.getElementById('start')
 var startScreen = document.getElementById('start-screen')
+var endScreen = document.getElementById('end-screen');
+var correctSound = new Audio('./assets/sfx/correct.wav');
+var incorrectSound = new Audio('./assets/sfx/incorrect.wav');
+var submit = document.getElementById('submit');
 var currentQuestionIndex = 0
 var score = 0
 var questionWrap = document.getElementById('questions')
 var questionTitle = document.getElementById('question-title')
 var choicesOutput = document.getElementById('choices')
-var counter;
+var initials = document.getElementById('initials');
+var feedback = document.getElementById('feedback');
+var finalScore = document.getElementById('final-score');
+var countdown = 75;
 
-// adding countdown
-function startCountdown(seconds) {
-    counter = seconds;
-    var interval = setInterval(() => {
-    // console.log(counter);
-    counter--;
-    if(counter < 1) {
-        clearInterval(interval);
-    }
-    timerEl.innerHTML = `${counter}`;
+
+
+
+// function that shows countdown timer and 
+function timeLeft() {
+
+    var timer = setInterval(function () {
+        timerEl.innerText = countdown;
+        countdown--;
+        if (countdown < 0) {
+            localStorage.setItem("Score", JSON.stringify(quizTime + 1)); // rests timed out score to 0
+            questionWrap.classList.add('hide'); // hides question
+            endScreen.classList.remove('hide'); // shows final score page
+            finalScore.innerHTML = JSON.parse(localStorage.getItem("Score")); // displays users final score and initial request
+            clearTimeout(timer); // stops the timer
+        }
     }, 1000);
-};
 
-
-btn.addEventListener('click', function () {
-    questionWrap.classList.remove('hide');
-    startScreen.classList.add('hide')
-    startCountdown(75)
-});
-
-// function to cycle through questions
-function startQuiz() {
-    var currentQuestion = questions[currentQuestionIndex];
-    var choices = currentQuestion.choices;
-    questionTitle.innerText = currentQuestion.title;
-    choicesOutput.innerHTML = '';
-
-
-    for(var i = 0; i < choices.length; i++) {
-        var choice = choices[i];
-        var isCorrect = currentQuestion.answer === choice;
-
-        choicesOutput.insertAdjacentHTML('beforeend', `
-        <button data-correct=${isCorrect}>${choice}</button>
-        `)
-
-    }
+    return timer;
 
 };
-
-function checkAnswer(event) {
-
-    console.log(event.target.dataset.correct);
-    var userChoice = event.target.dataset.correct;
-
-    if(userChoice == 'true') {
-        console.log(`Correct`);
-        currentQuestionIndex++
-        // insertAdjacentHTML('');
-        startQuiz();
-    } else {
-        console.log(`Wrong`);
-        currentQuestionIndex++
-        startQuiz();
-        counter-= 15;
-    }
-};
-
-choicesOutput.addEventListener('click', checkAnswer)
-
-startQuiz();
-
-
-
-// 7.12.22 - having to recommit as github isn't loading my new code to the published site
